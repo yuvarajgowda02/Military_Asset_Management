@@ -1,0 +1,33 @@
+version: "3.8"
+
+# Convenience compose file that spins up just the MySQL database, already
+# initialized with the schema + demo data, so you can run the backend
+# (mvn spring-boot:run) and frontend (npm start) directly on your host
+# without installing MySQL yourself.
+#
+# Usage:
+#   docker compose up -d
+# Then point backend/src/main/resources/application.properties at
+# localhost:3306 (already the default), user "root", password "root".
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mams-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: military_asset_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mams_mysql_data:/var/lib/mysql
+      - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mams_mysql_data:

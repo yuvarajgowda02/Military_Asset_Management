@@ -20,17 +20,41 @@ public class PurchaseController {
 
     private final PurchaseService purchaseService;
 
+    /**
+     * Get purchases with optional filters.
+     *
+     * Supported filters:
+     * - baseId
+     * - equipmentTypeId
+     * - startDate
+     * - endDate
+     */
     @GetMapping
     public List<Purchase> search(
             @RequestParam(required = false) Long baseId,
             @RequestParam(required = false) Long equipmentTypeId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return purchaseService.search(baseId, equipmentTypeId, startDate, endDate);
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate startDate,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate endDate) {
+
+        return purchaseService.search(
+                baseId,
+                equipmentTypeId,
+                startDate,
+                endDate
+        );
     }
 
+    /**
+     * Create a new purchase.
+     */
     @PostMapping
-    public Purchase create(@Valid @RequestBody PurchaseRequest request) {
+    public Purchase create(
+            @Valid @RequestBody PurchaseRequest request) {
+
         return purchaseService.create(request);
     }
 }

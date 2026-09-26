@@ -1,5 +1,6 @@
 package com.military.assetmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,10 +23,12 @@ public class Purchase {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "base_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Base base;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "equipment_type_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private EquipmentType equipmentType;
 
     @Column(nullable = false)
@@ -45,6 +48,7 @@ public class Purchase {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User createdBy;
 
     @Column(name = "created_at", updatable = false)
